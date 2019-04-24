@@ -5,4 +5,5 @@ schema {
 
 type Query {
   hello: String!
+  foo(blah: String!): String!
 }
