@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net/http"
 	"os"
@@ -18,7 +19,12 @@ func main() {
 	}
 
 	http.Handle("/", handler.Playground("GraphQL playground", "/graphql"))
-	http.Handle("/graphql", handler.GraphQL(hello_world.NewExecutableSchema(hello_world.Config{Resolvers: &hello_world.Resolver{}})))
+	handler := handler.GraphQL(hello_world.NewExecutableSchema(hello_world.Config{Resolvers: &hello_world.Resolver{}}))
+	http.HandleFunc("/graphql", func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.WithValue(r.Context(), "headers", r.Header)
+		r = r.WithContext(ctx)
+		handler(w, r)
+	})
 
 	http.HandleFunc("/healthcheck", func(res http.ResponseWriter, req *http.Request) {
 		res.Write([]byte("OK"))

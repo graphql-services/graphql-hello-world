@@ -41,7 +41,7 @@ deploy-local:
 
 run:
 	# DATABASE_URL="mysql://root:root@tcp(localhost:3306)/test?parseTime=true" PORT=8080 go run server/server.go
-	DATABASE_URL=sqlite3://test.db PORT=8080 go run server/server.go
+	PORT=8080 go run server/server.go
 
 # test:
 # 	DATABASE_URL=sqlite3://test.db $(IMAGE_NAME) server -p 8005
